@@ -101,8 +101,14 @@ public class BasketballEnglandStepDefinitions {
     public void iRegisterWithTermsAcceptedStatus(String termsAccepted) {
         User user = TestFactory.getUser("Standard User");
 
+        if(termsAccepted.equalsIgnoreCase("true") || termsAccepted.equalsIgnoreCase("false")) {
+            //Använd testdata från featurefil, konvertera String till boolean och överskrid termsAccepted i user-objektet
+            user.setAcceptTerms(Boolean.parseBoolean(termsAccepted.toLowerCase()));
+        }else{
+            throw new IllegalArgumentException("Ogiltig data inmatad: " + termsAccepted + "\n Kontrollera i featurefil att termsAccepted är true eller false");
+
+        }
         //Använd testdata från featurefil, konvertera String till boolean och överskrid termsAccepted i user-objektet
-        user.setAcceptTerms(Boolean.parseBoolean(termsAccepted));
         registerPage.createUser(user);
     }
 
