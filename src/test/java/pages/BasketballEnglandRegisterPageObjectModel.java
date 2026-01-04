@@ -2,7 +2,6 @@ package pages;
 
 import models.User;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -21,8 +20,11 @@ public class BasketballEnglandRegisterPageObjectModel {
     private By passwordField = By.cssSelector("#signupunlicenced_password");
     private By confirmPasswordField = By.cssSelector("#signupunlicenced_confirmpassword");
     private By acceptTermsCheckbox = By.cssSelector("label[for='sign_up_25']");
+    private By acceptTermsHiddenValue = By.id("sign_up_25");
+    private By acceptOver18HiddenValue = By.id("sign_up_26");
     private By acceptOver18Checkbox = By.cssSelector("label[for='sign_up_26']");
     private By acceptCodeOfEthics = By.cssSelector("label[for='fanmembersignup_agreetocodeofethicsandconduct']");
+    private By acceptCodeOfEthicsHiddenValue= By.id("fanmembersignup_agreetocodeofethicsandconduct");
     private By submitButton = By.cssSelector(".form-actions");
     private By errorMessage = By.cssSelector(".field-validation-error");
     private By accountCreationMsg = By.tagName("h2");
@@ -34,7 +36,7 @@ public class BasketballEnglandRegisterPageObjectModel {
         this.driver = driver;
 
         //Initialisera en webdriverWait som ska gälla för alla metoder
-        wait = new WebDriverWait(driver, Duration.ofSeconds(11));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
     }
 
@@ -55,13 +57,13 @@ public class BasketballEnglandRegisterPageObjectModel {
 
         //Om acceptTerms är true kryssa i terms
         if (user.getAcceptTerms()) {
-            forceClick(acceptTermsCheckbox);
+            checkCustomBox(acceptTermsCheckbox, acceptTermsHiddenValue);
         }
-        forceClick(acceptOver18Checkbox);
-        forceClick(acceptCodeOfEthics);
+        checkCustomBox(acceptOver18Checkbox, acceptOver18HiddenValue);
+        checkCustomBox(acceptCodeOfEthics, acceptCodeOfEthicsHiddenValue);
 
         //Klickar på submit-knappen
-        click(submitButton);
+        submit(submitButton);
     }
 
 
@@ -77,7 +79,7 @@ public class BasketballEnglandRegisterPageObjectModel {
         return output;
     }
 
-    private void click(By locator) {
+    private void submit(By locator) {
         waitForElementToBeClickable(locator).submit();
     }
 
@@ -96,13 +98,22 @@ public class BasketballEnglandRegisterPageObjectModel {
         return element;
     }
 
+    private WebElement waitForHiddenInput(By by) {
+        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(by));
+        return element;
+    }
 
-    private void forceClick(By locator) {
-        WebElement hiddenCheckbox = waitForElementToBeClickable(locator);
-        //Använder Javascript force click för att klicka på element som är dolda med en knapptryckning (industristandard)
-        //Annars skulle alternativet vara att klicka två gånger vilket inte är rekommenderat.
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", hiddenCheckbox);
+    //Metod för att klicka på custom checkboxar med dolda input-värden
+    private void checkCustomBox(By visibleLabel, By hiddenInput) {
+        WebElement customBox = waitForElementToBeClickable(visibleLabel);
+        WebElement hiddenValue = waitForHiddenInput(hiddenInput);
+
+        if (!hiddenValue.isSelected()) {
+            customBox.click();
+
+        }
 
     }
+
 
 }
