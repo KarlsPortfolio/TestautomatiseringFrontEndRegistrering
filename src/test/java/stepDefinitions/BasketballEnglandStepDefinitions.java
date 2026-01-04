@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class BasketballEnglandStepDefinitions {
     private WebDriver driver;
     BasketballEnglandRegisterPageObjectModel registerPage;
+
     @Given("I am using {string} as a browser")
     public void iAmUsingAsABrowser(String browser) {
         if (browser.equalsIgnoreCase("chrome")) {
@@ -55,7 +56,7 @@ public class BasketballEnglandStepDefinitions {
     @Then("I get confirmation message {string}")
     public void iGetConfirmationMessage(String expectedMessage) {
         //Kontrollera att meddelande visas på skärmen och om texten stämmer med testdata
-        assert(registerPage.getAccountCreationMessage()).isDisplayed();
+        assert (registerPage.getAccountCreationMessage()).isDisplayed();
         String actualMessage = registerPage.getAccountCreationMessage().getText();
         assertEquals(expectedMessage, actualMessage);
 
@@ -66,7 +67,7 @@ public class BasketballEnglandStepDefinitions {
         User user = TestFactory.getUser("Standard User");
 
         //Om testdata är markerad som [empty] ska lastName överskridas med värdet av en tom sträng
-        if(lastName.equalsIgnoreCase("[empty]")){
+        if (lastName.equalsIgnoreCase("[empty]")) {
             lastName = "";
 
         }
@@ -79,7 +80,7 @@ public class BasketballEnglandStepDefinitions {
     @Then("I get error message {string}")
     public void iGetErrorMessage(String expectedMessage) {
         //Kontrollera att meddelande visas på skärmen och om texten stämmer med testdata
-        assert(registerPage.getErrorMessage()).isDisplayed();
+        assert (registerPage.getErrorMessage()).isDisplayed();
         String actualMessage = registerPage.getErrorMessage().getText();
         assertEquals(expectedMessage, actualMessage);
 
@@ -101,10 +102,10 @@ public class BasketballEnglandStepDefinitions {
     public void iRegisterWithTermsAcceptedStatus(String termsAccepted) {
         User user = TestFactory.getUser("Standard User");
 
-        if(termsAccepted.equalsIgnoreCase("true") || termsAccepted.equalsIgnoreCase("false")) {
+        if (termsAccepted.equalsIgnoreCase("true") || termsAccepted.equalsIgnoreCase("false")) {
             //Använd testdata från featurefil, konvertera String till boolean och överskrid termsAccepted i user-objektet
             user.setAcceptTerms(Boolean.parseBoolean(termsAccepted.toLowerCase()));
-        }else{
+        } else {
             throw new IllegalArgumentException("Ogiltig data inmatad: " + termsAccepted + "\n Kontrollera i featurefil att termsAccepted är true eller false");
 
         }
@@ -113,7 +114,15 @@ public class BasketballEnglandStepDefinitions {
     }
 
     @After
-    public void breakDown(){
-        driver.quit();
+    public void breakDown() {
+        if (driver != null) {
+            try {
+                driver.quit();
+            } catch (Exception e) {
+                System.out.println("Driver stängdes abrupt vid driver.quit(): " + e.getMessage());
+
+            }
+        }
+
     }
 }
