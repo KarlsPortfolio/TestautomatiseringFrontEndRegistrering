@@ -56,7 +56,7 @@ public class BasketballEnglandStepDefinitions {
     @Then("I get confirmation message {string}")
     public void iGetConfirmationMessage(String expectedMessage) {
         //Kontrollera att meddelande visas på skärmen och om texten stämmer med testdata
-        assert (registerPage.getAccountCreationMessage()).isDisplayed();
+        assert(registerPage.getAccountCreationMessage()).isDisplayed();
         String actualMessage = registerPage.getAccountCreationMessage().getText();
         assertEquals(expectedMessage, actualMessage);
 
@@ -106,7 +106,7 @@ public class BasketballEnglandStepDefinitions {
             //Använd testdata från featurefil, konvertera String till boolean och överskrid termsAccepted i user-objektet
             user.setAcceptTerms(Boolean.parseBoolean(termsAccepted.toLowerCase()));
         } else {
-            throw new IllegalArgumentException("Ogiltig data inmatad: " + termsAccepted + "\n Kontrollera i featurefil att termsAccepted är true eller false");
+            throw new IllegalArgumentException("Ogiltig data inmatad: " + termsAccepted + "\n Kontrollera i featurefil att status är true eller false");
 
         }
         //Använd testdata från featurefil, konvertera String till boolean och överskrid termsAccepted i user-objektet
