@@ -88,18 +88,18 @@ public class BasketballEnglandRegisterPageObjectModel {
         waitForElementVisible(locator).sendKeys(value);
     }
 
-    private WebElement waitForElementToBeClickable(By by) {
-        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(by));
+    private WebElement waitForElementToBeClickable(By locator) {
+        WebElement element = wait.until(ExpectedConditions.elementToBeClickable(locator));
         return element;
     }
 
-    private WebElement waitForElementVisible(By by) {
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+    private WebElement waitForElementVisible(By locator) {
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         return element;
     }
 
-    private WebElement waitForHiddenInput(By by) {
-        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(by));
+    private WebElement waitForHiddenInput(By locator) {
+        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
         return element;
     }
 
